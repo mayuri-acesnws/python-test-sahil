@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Purchase List</h1>
+
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="purchaseinvoiceno" class="form-label">Invoice No</label>
+          <input type="text" class="form-control" name="purchaseinvoiceno" id="purchaseinvoiceno">
+        </div>
+        <div class="mb-3">
+          <label for="suppliername" class="form-label">Supplier Name</label>
+          <input type="text" class="form-control" name="suppliername" id="suppliername">
+        </div>
+        <div class="mb-3">
+          <label for="purchasedate" class="form-label">Purchase Date (DD/MM/YYYY)</label>
+          <input type="text" class="form-control" name="purchasedate" id="purchasedate">
+        </div>
+        <div class="mb-3">
+          <label for="purchaseamount" class="form-label">Amount</label>
+          <input type="text" class="form-control" name="purchaseamount" id="purchaseamount">
+        </div>
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+
+    <table class="table table-bordered mt-5">
+        <thead>
+            <tr>
+                <th>Invoice No</th>
+                <th>Supplier</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in purch %}
+            <tr>
+                <td>{{ p.invoice }}</td>
+                <td>{{ p.supplier }}</td>
+                <td>{{ p.date }}</td>
+                <td>{{ p.amount }}</td>
+                <td><a href="{% url 'purchase_delete' p.id %}" class="btn btn-danger">Delete</a></td>
+                <td><a href="{% url 'purchase-update' p.id %}" class="btn btn-success">Update</a></td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No purchases yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
